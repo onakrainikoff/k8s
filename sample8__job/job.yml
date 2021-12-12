@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ping-job
+spec:
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 120
+  template:
+    spec:
+      containers:
+        - name: centos
+          image: centos:8
+          command: ["ping", "ya.ru", "-c", "5"]
+      restartPolicy: Never

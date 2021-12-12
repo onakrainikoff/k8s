@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-v14
+data:
+  index.html: |-
+    nginx-v14
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-v14
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+      version: v14
+  template:
+    metadata:
+      labels:
+        app: nginx
+        version: v14
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html/index.html
+              name: index-html
+              subPath: index.html
+      volumes:
+        - name: index-html
+          configMap:
+            name: nginx-v14
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-v14
+spec:
+  selector:
+    app: nginx
+    version: v14
+  type: LoadBalancer
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 80

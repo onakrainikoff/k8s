@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: centos
+  labels:
+    app: centos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: centos
+  template:
+    metadata:
+      labels:
+        app: centos
+    spec:
+      containers:
+        - name: centos
+          image: centos:8
+          command: ["/bin/sleep", "3650d"]
+          volumeMounts:
+            - mountPath: /volume
+              name: host-path-volume
+      volumes:
+        - name: host-path-volume
+          hostPath:
+            path: /tmp/host-path-volume
+            type: DirectoryOrCreate
