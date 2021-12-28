@@ -1,5 +1,5 @@
 #
-#  Run "kubectl create configmap config-file --from-file=secret.properties" for creating configmap
+#  Run "kubectl create configmap config-file --from-file=configuration.properties" for creating configmap
 #
 apiVersion: apps/v1
 kind: Deployment
@@ -22,8 +22,8 @@ spec:
           image: centos:8
           command: ["/bin/sleep", "3650d"]
           volumeMounts:
-            - mountPath: /tmp/secret.properties
-              subPath: secret.properties
+            - mountPath: /tmp/configuration.properties
+              subPath: configuration.properties
               name: config-file
       volumes:
         - name: config-file
